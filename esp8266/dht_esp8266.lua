@@ -3,8 +3,8 @@ local SSID_PASSWORD = "WIFI-PASSWORD"
 local SIGNAL_MODE = wifi.PHYMODE_N
 DHT_PIN = 4
 INTERVAL = 30 -- seconds
-RASPBERRY_PI_URL = "http://192.168.1.80:8000/esp8266_trigger"
-SERVER_PASSWORD = "tutorials-raspberrypi.de"
+RASPBERRY_PI_URL = "http://192.168.0.22:8000/esp8266_trigger"
+SERVER_PASSWORD = "esp8266"
 
 
 function wait_for_wifi_conn ( )
@@ -23,8 +23,8 @@ end
 function transmit_msg(data)
     -- send http request to Raspberry Pi
     ok, json = pcall(sjson.encode, data)
-    if ok then        
-        http.post(RASPBERRY_PI_URL, 
+    if ok then
+        http.post(RASPBERRY_PI_URL,
             'Content-Type: application/json\r\n',
             json,
             function(code, data)
@@ -42,7 +42,7 @@ end
 function readDHTValues()
     status, temp, humi, temp_dec, humi_dec = dht.read(DHT_PIN)
     if status == dht.OK then
-        return {temperature= temp, humidity= humi}    
+        return {temperature= temp, humidity= humi}
     else
         return false
     end
@@ -52,10 +52,10 @@ function main()
     for i=1,10 do
         data = readDHTValues()
         if data ~= false then
-            
+
             data["sender_id"] = wifi.ap.getmac()
             data["password"] = SERVER_PASSWORD
-        
+
             transmit_msg(data)
             break
         end
@@ -70,7 +70,6 @@ wifi.sta.autoconnect(1)
 
 -- Hang out until we get a wifi connection before the httpd server is started.
 wait_for_wifi_conn ( )
-
 
 tmr.alarm(2, INTERVAL * 1000, tmr.ALARM_AUTO, function ()
     main()

@@ -1,6 +1,6 @@
 {
-  "name": "raspberry-pi-esp8266-weather-logger",
-  "version": "1.0.0",
+  "name": "Wetterstation",
+  "version": "1.0.1",
   "description": "Raspberry Pi Server for weather logging (ESP8266) with DHT11 / DHT22",
   "main": "index.js",
   "scripts": {
@@ -16,8 +16,8 @@
     "weather",
     "station"
   ],
-  "author": "Felix Stern",
-  "homepage": "https://tutorials-raspberrypi.de/",
+  "author": "Hendrik Früh",
+  "homepage": "",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.17.2",
